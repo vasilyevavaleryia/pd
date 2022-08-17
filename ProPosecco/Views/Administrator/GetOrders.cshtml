@@ -1,0 +1,56 @@
+﻿@using ProProsecco.Enums
+@using ProProsecco.Helpers.ExtensionMethods
+
+@model ICollection<ProProsecco.Models.Orders.OrderGetModel>
+
+@{
+    ViewData["Title"] = "Przeglądanie zamówień";
+}
+
+<div class="container">
+    <div class="row my-5 text-center">
+        <div class="col-12 py-3">
+            <h3 class="border-bottom-gold d-block w-50 mx-auto py-3">Wszytkie zamówienia</h3>
+        </div>
+        <div class="col-12 my-3">
+            @if (Model.Count > 0)
+            {
+                <table class="table table-striped px-3 w-100">
+                    <tr>
+                        <th class="align-middle" scope="col">Nr zamówienia</th>
+                        <th class="align-middle" scope="col">Aktualny status</th>
+                        <th class="align-middle" scope="col">[Oczekuje]</th>
+                        <th class="align-middle" scope="col">[Przyjęte]</th>
+                        <th class="align-middle" scope="col">[Zrealizowane]</th>
+                        <th class="align-middle" scope="col">[Anulowane]</th>
+                    </tr>
+
+                    @foreach (var order in Model)
+                    {
+                        <tr>
+                            <td class="align-middle">@order.Id</td>
+                            <td class="align-middle">@order.Status.GetDisplayName()</td>
+                            <td class="align-middle">
+                                <a class="btn btn-primary py-2 w-100" asp-controller="Shop" asp-action="ChangeToWaiting" asp-route-id="@order.Id">Oczekuje</a>
+                            </td>
+                            <td class="align-middle">
+                                <a class="btn btn-secondary py-2 w-100" asp-controller="Shop" asp-action="ChangeToInProgress" asp-route-id="@order.Id">Przyjęte</a>
+                            </td>
+                            <td class="align-middle">
+                                <a class="btn btn-success py-2 w-100" asp-controller="Shop" asp-action="ChangeToCompleted" asp-route-id="@order.Id">Zrealizowane</a>
+                            </td>
+                            <td class="align-middle">
+                                <a class="btn btn-danger py-2 w-100" asp-controller="Shop" asp-action="ChangeToCancelled" asp-route-id="@order.Id">Anulowane</a>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            }
+            else
+            {
+                <h3 class="text-center text-red-normal py-5">Nie ma aktualnie żadnych zamówień</h3>
+            }
+        </div>
+        
+    </div>
+</div>

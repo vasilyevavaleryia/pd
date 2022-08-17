@@ -1,0 +1,61 @@
+﻿@model ProProsecco.Models.Wine.WineGetModel
+
+@{
+    ViewData["Title"] = $"{Model.Name}";
+}
+
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-12 col-md-6 py-3">
+            @if (Model.Photo.Length == 0)
+            {
+                <img src="~/img/wine-default_img.jpg" alt="Wino bez zdjęcia" class="img-fluid img-wine border-brown p-0">
+            }
+            else
+            {
+                <img class="img-fluid img-wine border-brown p-0" alt="@Model.Name - zdjęcie" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Photo)" />
+            }
+            <h3 class="text-center py-3">
+                <b>@Model.Name</b>
+            </h3>
+        </div>
+        <div class="col-12 col-md-6 my-md-3">
+            Kolor: <b>@Model.Color</b><br />
+            Smak: <b>@Model.Taste</b><br />
+            Kraj produkcji: <b>@Model.ProductionCountry</b><br />
+            Rok produkcji: <b>@Model.ProductionYear</b><br />
+            Cena: <b>@Model.Price zł</b><br />
+            Dostępna ilość:
+            @if (Model.Amount == 0)
+            {
+                <span class="text-danger">
+                    <b>@Model.Amount</b>
+                </span>
+            }
+            else
+            {
+                <b>@Model.Amount</b>
+            }<br />
+
+            @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(w => w.Id)
+                @Html.HiddenFor(w => w.Amount)
+                <div class="form-group text-center d-flex my-3 py-3 border-top-brown">
+                    <button type="submit" class="btn btn-success form-control d-block mr-3">Dodaj do koszyka</button>
+                    <input asp-for="@Model.AmountCartAdd" value="1" class="form-control d-block" min="1" />
+                    <span asp-validation-for="@Model.AmountCartAdd" class="text-danger"></span>
+                </div>
+            }
+            <div class="my-3 text-center">
+                <span class="text-danger">@TempData["Error"]</span>
+            </div>
+
+        </div>
+        <div class="col-12 my-3 pb-4 border-top-brown">
+            <h4 class="py-2">Opis</h4>
+            @Model.Description
+        </div>
+    </div>
+</div>

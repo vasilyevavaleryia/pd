@@ -1,0 +1,59 @@
+﻿@model ICollection<ProProsecco.Models.Wine.WineGetModel>
+
+@{
+    ViewData["Title"] = "Zarządzanie winami";
+}
+
+<div class="container">
+    <div class="row my-5 text-center">
+        <div class="col-12 py-3">
+            <h3 class="border-bottom-gold d-block w-50 mx-auto py-3">Panel win</h3>
+        </div>
+        <div class="col-12 my-3">
+            <a class="btn btn-success btn-lg py-3 d-block w-50 mx-auto" asp-controller="Wine" asp-action="Create">Dodaj wino</a>
+        </div>
+        <div class="col-12 my-3">
+            @if (Model.Count > 0)
+            {
+                <table class="table table-striped px-3 w-100">
+                    <tr>
+                        <th class="align-middle" scope="col">Nazwa</th>
+                        <th class="align-middle" scope="col">Kolor</th>
+                        <th class="align-middle" scope="col">Smak</th>
+                        <th class="align-middle" scope="col">Kraj pochodzenia</th>
+                        <th class="align-middle" scope="col">Dostępność [szt]</th>
+                        <th class="align-middle" scope="col">Cena [zł]</th>
+                        <th class="align-middle" scope="col">[Zobacz] </th>
+                        <th class="align-middle" scope="col">[Edytuj]</th>
+                        <th class="align-middle" scope="col">[Usuń]</th>
+                    </tr>
+
+                    @foreach (var wine in Model)
+                    {
+                        <tr>
+                            <td class="align-middle">@wine.Name</td>
+                            <td class="align-middle">@wine.Color</td>
+                            <td class="align-middle">@wine.Taste</td>
+                            <td class="align-middle">@wine.ProductionCountry</td>
+                            <td class="align-middle">@wine.Amount</td>
+                            <td class="align-middle">@wine.Price</td>
+                            <td class="align-middle">
+                                <a class="btn btn-primary py-2 w-100" asp-controller="Wine" asp-action="Get" asp-route-id="@wine.Id">Zobacz</a>
+                            </td>
+                            <td class="align-middle">
+                                <a class="btn btn-warning py-2 w-100" asp-controller="Wine" asp-action="Update" asp-route-id="@wine.Id">Edytuj</a>
+                            </td>
+                            <td class="align-middle">
+                                <a class="btn btn-danger py-2 w-100" asp-controller="Wine" asp-action="Delete" asp-route-id="@wine.Id">Usuń</a>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            }
+            else
+            {
+                <h3 class="text-center text-red-normal py-5">Nie ma żadnych win w bazie</h3>
+            }
+        </div>
+    </div>
+</div>

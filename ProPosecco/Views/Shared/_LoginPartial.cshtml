@@ -1,0 +1,49 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using ProPosecco.Areas.Identity.Data
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+<ul class="navbar-nav align-items-center justify-content-center">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        @if (User.IsInRole("Administrator"))
+        {
+            <li class="nav-item">
+                <div class="form-inline">
+                    <a class="btn btn-link nav-link nav-link-red-normal" asp-controller="Administrator" asp-action="Index">[Panel administracyjny]</a>
+                </div>
+            </li>
+        }
+        <li class="nav-item">
+            <div class="form-inline">
+                <a class="btn btn-link nav-link nav-link-purple-dark" asp-controller="User" asp-action="GetOrders">@UserManager.GetUserName(User)</a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <div class="form-inline">
+                <a class="btn btn-link nav-link text-success cart d-block" asp-controller="Cart" asp-action="Index">
+                    <i class="fa-solid fa-cart-shopping" style="font-size: 2.5em;"></i>
+                </a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Shop", new { area = "" })">
+                <button id="logout" type="submit" class="btn btn-link nav-link nav-link-purple-dark">Wyloguj</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <div class="form-inline">
+                <a class="btn btn-link nav-link nav-link-purple-dark" id="register" asp-area="Identity" asp-page="/Account/Register">Rejestracja</a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <div class="form-inline">
+                <a class="btn btn-link nav-link nav-link-purple-dark" id="login" asp-area="Identity" asp-page="/Account/Login">Logowanie</a>
+            </div>
+        </li>
+    }
+</ul>

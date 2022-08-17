@@ -1,0 +1,57 @@
+﻿@model ICollection<ProProsecco.Models.User.UserGetModelAdminView>
+
+@{
+    ViewData["Title"] = "Zarządzanie użytkownikami";
+}
+
+<div class="container">
+    <div class="row my-5 text-center">
+        <div class="col-12 py-3">
+            <h3 class="border-bottom-gold d-block w-50 mx-auto py-3">Panel użytkowników</h3>
+        </div>
+        <div class="col-12 my-3">
+            @if (Model.Count > 0)
+            {
+                <table class="table table-striped px-3 w-100">
+                    <tr>
+                        <th class="align-middle" scope="col">Imię</th>
+                        <th class="align-middle" scope="col">Nazwisko</th>
+                        <th class="align-middle" scope="col">Miasto</th>
+                        <th class="align-middle" scope="col">Email</th>
+                        <th class="align-middle" scope="col">[Zobacz] </th>
+                        <th class="align-middle" scope="col">[Usuń]</th>
+                    </tr>
+
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td class="align-middle">@user.FirstName</td>
+                            <td class="align-middle">@user.Surname</td>
+                            <td class="align-middle">
+                                @if (user.City != null)
+                                {
+                                    @user.City
+                                }
+                                else
+                                {
+                                    <span>-</span>
+                                }
+                            </td>
+                            <td class="align-middle">@user.Email</td>
+                            <td class="align-middle">
+                                <a class="btn btn-primary py-2 w-100" asp-controller="User" asp-action="Get" asp-route-id="@user.Id">Zobacz</a>
+                            </td>
+                            <td class="align-middle">
+                                <a class="btn btn-danger py-2 w-100" asp-controller="User" asp-action="Delete" asp-route-id="@user.Id">Usuń</a>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            }
+            else
+            {
+                <h3 class="text-center text-red-normal py-5">Nie ma żadnych użytkowników w bazie</h3>
+            }
+        </div>
+    </div>
+</div>

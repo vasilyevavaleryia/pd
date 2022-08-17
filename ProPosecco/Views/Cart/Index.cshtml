@@ -1,0 +1,80 @@
+﻿@using ProProsecco.Helpers.ExtensionMethods
+
+@model ProProsecco.Models.Carts.CartGetModel
+
+@{
+    ViewData["Title"] = "Twój koszyk";
+}
+
+<div class="container">
+    <div class="row my-5 text-center">
+        <div class="col-12 py-3">
+            <h3 class="border-bottom-gold d-block w-50 mx-auto py-3">Twój koszyk</h3>
+        </div>
+        <div class="col-12 py-3">
+            @if (TempData["Bought"] != null)
+            {
+                <span class="text-success">@TempData["Bought"]</span>
+                <p class="text-justify mt-3">
+                    Dziękujemy za złożenie zamówienia.<br />
+                    Aktualny status Twojego zamówienia: <b>Oczekuje na płatność</b><br />
+                    Proszę o dokonanie przelewu na konto o nr <b>00 1111 2222 3333 4444 5555 6666</b>, podając w tytule przelewu nr zamówienia.<br />
+                    Po zaksięgowaniu płatności status twojego zamówienia zmieni się na <b>Przyjęte do realizacji</b>.
+                </p>
+            }
+
+            <span class="text-success">@TempData["Message"]</span>
+            <span class="text-danger">@TempData["Error"]</span>
+        </div>
+        <div class="col-12 my-3">
+            @if (Model.CartItems != null && Model.CartItems.Count > 0)
+            {
+                <table class="table table-striped px-3 w-100">
+                    <tr>
+                        <th class="align-middle" scope="col">[Usuń]</th>
+                        <th class="align-middle" scope="col">Nazwa</th>
+                        <th class="align-middle" scope="col">Kolor</th>
+                        <th class="align-middle" scope="col">Smak</th>
+                        <th class="align-middle" scope="col">Kraj pochodzenia</th>
+                        <th class="align-middle" scope="col">Ilość [szt]</th>
+                        <th class="align-middle" scope="col">Cena [zł]</th>
+                    </tr>
+
+                    @foreach (var item in Model.CartItems)
+                    {
+                    <tr>
+                        <td class="align-middle">
+                            @using (Html.BeginForm("DeleteFromCart", "Cart", FormMethod.Get))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.HiddenFor(w => item.Wine.Id)
+                                <button type="submit" class="btn btn-danger py-2 w-100">Usuń</button>
+                            }
+                        </td>
+                        <td class="align-middle">@item.Wine.Name</td>
+                        <td class="align-middle">@item.Wine.Color.GetDisplayName()</td>
+                        <td class="align-middle">@item.Wine.Taste.GetDisplayName()</td>
+                        <td class="align-middle">@item.Wine.ProductionCountry.GetDisplayName()</td>
+                        <td class="align-middle">@item.Amount</td>
+                        <td class="align-middle">@((item.Wine.Price * item.Amount).ToString("0.00"))</td>
+                    </tr>
+                    }
+                    <tr class="font-weight-bold">
+                        <td class="align-middle text-left" colspan="6">Cena za zakupy</td>
+                        <td class="align-middle">@Model.TotalPrice.ToString("0.00")</td>
+                    </tr>
+                </table>
+                <div class="col-12">
+                    <a class="btn btn-success py-2 my-3 w-25 d-block mr-auto" asp-controller="Shop" asp-action="Create" asp-route-id="@Model.Id">Kup</a>
+                </div>
+                <div class="col-12">
+                    <a class="btn btn-danger py-2 my-1 w-25 d-block mr-auto" asp-controller="Cart" asp-action="Delete" asp-route-id="@Model.Id">Usuń zawartość koszyka</a>
+                </div>
+            }
+            else
+            {
+                <h3 class="text-center text-dark py-5">Twój koszyk jest pusty</h3>
+            }
+        </div>
+    </div>
+</div>

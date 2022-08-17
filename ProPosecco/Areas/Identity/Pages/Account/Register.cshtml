@@ -1,0 +1,78 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Rejestracja";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-6 mt-5">
+            <h1>@ViewData["Title"]</h1>
+            <div asp-validation-summary="All" class="text-danger pb-3"></div>
+            <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                <hr />
+                <div class="form-group">
+                    <label asp-for="Input.Email"></label>
+                    <span class="text-danger">*</span>
+                    <input asp-for="Input.Email" class="form-control" />
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Password"></label>
+                    <span class="text-danger">*</span>
+                    <input asp-for="Input.Password" class="form-control" />
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.ConfirmPassword"></label>
+                    <span class="text-danger">*</span>
+                    <input asp-for="Input.ConfirmPassword" class="form-control" />
+                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.FirstName"></label>
+                    <span class="text-danger">*</span>
+                    <input asp-for="Input.FirstName" class="form-control" />
+                    <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Surname"></label>
+                    <span class="text-danger">*</span>
+                    <input asp-for="Input.Surname" class="form-control" />
+                    <span asp-validation-for="Input.Surname" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.ZipCode"></label>
+                    <input asp-for="Input.ZipCode" class="form-control" />
+                    <span asp-validation-for="Input.ZipCode" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.City"></label>
+                    <input asp-for="Input.City" class="form-control" />
+                    <span asp-validation-for="Input.City" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Street"></label>
+                    <input asp-for="Input.Street" class="form-control" />
+                    <span asp-validation-for="Input.Street" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.HouseNumber"></label>
+                    <input asp-for="Input.HouseNumber" class="form-control" />
+                    <span asp-validation-for="Input.HouseNumber" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Zarejestruj</button>
+            </form>
+            <p class="text-danger mt-3">
+                * - pola wymgane
+            </p>
+        </div>
+        <div class="col-12 col-md-6 mt-5 mt-md-0 d-flex justify-content-center">
+            <img class="img-fluid logo-max-size mx-auto" src="~/img/logo_pro_prosecco.png" alt="Logo strony ProPosecco" />
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,90 @@
+﻿@using ProProsecco.Enums
+@using ProProsecco.Helpers.ExtensionMethods
+
+@model ProProsecco.Models.Wine.WineGetModelShopView
+
+@{
+    ViewData["Title"] = "Winiarnia";
+}
+
+
+<div class="container-fluid mx-0 no-gutters">
+    <div class="row my-3 bg-dark-purple p-3 border-bottom-gold border-top-gold">
+        @using (Html.BeginForm("Index", "Shop", FormMethod.Get, new { @class = "w-100" }))
+        {
+            <div col-12">
+                @Html.AntiForgeryToken()
+                <div class="row w-100">
+                    <div class="col-6 col-md-3 form-group d-flex">
+                        <input asp-for="@Model.Name" placeholder="Wyszukaj po nazwie" class="form-control w-100 text-center px-2" />
+                    </div>
+                    <div class="col-6 col-md-3 form-group d-flex">
+                        <select class="form-control w-100 px-2 text-center d-block" asp-for="@Model.Color" asp-items="Html.GetEnumSelectList<WineColor>()">
+                            <option selected="selected" value="">Wybierz kolor</option>
+                        </select>
+                    </div>
+                    <div class="col-6 col-md-3 form-group d-flex">
+                        <select class="form-control w-100 px-2 text-center" asp-for="@Model.Taste" asp-items="Html.GetEnumSelectList<WineTaste>()">
+                            <option selected="selected" value="">Wybierz smak</option>
+                        </select>
+                    </div>
+                    <div class="col-6 col-md-3 form-group d-flex">
+                        <select class="form-control w-100 text-center px-2" asp-for="@Model.ProductionCountry" asp-items="Html.GetEnumSelectList<Country>()">
+                            <option selected="selected" value="">Wybierz kraj</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row my-3">
+                <div class="col-12">
+                    <button type="submit" class="btn btn-info form-control d-block w-50 mx-auto">Szukaj</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        @if (Model.Wines.Count > 0)
+        {
+            @foreach (var wine in Model.Wines)
+            {
+                <div class="col-6 col-md-4 border-gold">
+                    <div class="row">
+                        <div class="col-12">
+                            @if (wine.Photo.Length == 0)
+                            {
+                                <img src="~/img/wine-default_img.jpg" alt="Wino bez zdjęcia" class="img-fluid img-wine p-0">
+                            }
+                            else
+                            {
+                                <img class="img-fluid img-wine p-0" alt="@wine.Name - zdjęcie" src="data:image/jpeg;base64,@Convert.ToBase64String(wine.Photo)" />
+                            }
+                        </div>
+                    </div>
+                    <div class="row border-top-gold my-2 pt-2">
+                        <div class="col-12">
+                            Nazwa: <b>@wine.Name</b>
+                        </div>
+                        <div class="col-12">
+                            Smak: <b>@wine.Taste.GetDisplayName()</b>
+                        </div>
+                        <div class="col-12">
+                            Kolor: <b>@wine.Color.GetDisplayName()</b>
+                        </div>
+                    </div>
+                    <div class="row border-top-gold my-2">
+                        <div class="col-12 d-flex align-items-center justify-content-center my-2">
+                            <a class="btn btn-primary py-2 w-50 d-block" asp-controller="Wine" asp-action="Get" asp-route-id="@wine.Id">Zobacz</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <h3 class="text-center text-red-normal py-5">Nie znaleziono żadnego wina</h3>
+        }
+
+    </div>
+</div>

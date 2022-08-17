@@ -1,0 +1,92 @@
+﻿@using ProProsecco.Enums
+
+@model ProProsecco.Models.Wine.WineUpdateModel
+
+@{
+    ViewData["Title"] = "Aktualizacja wina";
+}
+
+@using (Html.BeginForm("Update", "Wine", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="container">
+        <div class="row w-50 mx-auto">
+            <div class="col-12">
+                <form class="border border-info rounded p-4 m-3 shadow-lg" method="post">
+                    @Html.HiddenFor(w => w.Id)
+                    @Html.HiddenFor(w => w.Photo)
+                    <h2 class="mb-3 pb-3 border-bottom-gold text-center">Aktualizacja wina</h2>
+                    <div class="h3 text-danger text-center my-3">@TempData["Error"]</div>
+                    <div class="form-group text-center">
+                        <label asp-for="@Model.Name"></label>
+                        <input asp-for="@Model.Name" class="form-control w-100" value="@Model.Name" />
+                        <span asp-validation-for="@Model.Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group text-center">
+                        <label asp-for="@Model.ProductionYear"></label>
+                        <input asp-for="@Model.ProductionYear" class="form-control w-100" value="@Model.ProductionYear" />
+                        <span asp-validation-for="@Model.ProductionYear" class="text-danger"></span>
+                    </div>
+                    <div class="form-group text-center">
+                        <label asp-for="@Model.Price"></label>
+                        <input asp-for="@Model.Price" class="form-control w-100" value="@Model.Price)" />
+                        <span asp-validation-for="@Model.Price" class="text-danger"></span>
+                    </div>
+                    <div class="form-group text-center">
+                        <label asp-for="@Model.Amount"></label>
+                        <input asp-for="@Model.Amount" class="form-control w-100" value="@Model.Amount" />
+                        <span asp-validation-for="@Model.Amount" class="text-danger"></span>
+                    </div>
+                    <div class="form-group text-center">
+                        <label asp-for="@Model.Color"></label><br />
+                        <select class="form-control w-100 text-center" asp-for="@Model.Color" asp-items="Html.GetEnumSelectList<WineColor>()">
+                            <option selected="selected" value="@Model.Color">Wybierz kolor</option>
+                        </select>
+                        <span asp-validation-for="@Model.Color" class="text-danger"></span>
+                    </div>
+                    <div class="form-group text-center">
+                        <label asp-for="@Model.Taste"></label><br />
+                        <select class="form-control w-100 text-center" asp-for="@Model.Taste" asp-items="Html.GetEnumSelectList<WineTaste>()">
+                            <option selected="selected" value="@Model.Taste">Wybierz smak</option>
+                        </select>
+                        <span asp-validation-for="@Model.Taste" class="text-danger"></span>
+                    </div>
+                    <div class="form-group text-center">
+                        <label asp-for="@Model.ProductionCountry"></label><br />
+                        <select class="form-control w-100 text-center" asp-for="@Model.ProductionCountry" asp-items="Html.GetEnumSelectList<Country>()">
+                            <option selected="selected" value="@Model.ProductionCountry">Wybierz kraj</option>
+                        </select>
+                        <span asp-validation-for="@Model.ProductionCountry" class="text-danger"></span>
+                    </div>
+                    <div class="form-group text-center">
+                        <label asp-for="@Model.Description"></label>
+                        <textarea asp-for="@Model.Description" class="form-control w-100">@Model.Description</textarea>
+                        <span asp-validation-for="@Model.Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group text-center">
+                        @if (Model.Photo.Length != 0)
+                        {
+                            <img class="img-responsive img-wine border-brown p-0" alt="@Model.Name - zdjęcie" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Photo)" />
+                            <br />
+                        }
+                        <label class="custom-file-upload-label">
+                            <input type="file" name="imageFile" id="imageFile" />
+                            <span style="cursor: pointer">Wgraj zdjęcie</span>
+                            <br />
+                            <p class="h5 my-3" id="fileName"></p>
+                        </label>
+                        <span asp-validation-for="@Model.Photo" class="text-danger"></span>
+                    </div>
+                    <div class="form-group my-5 py-2 d-flex align-items-center justify-content-center">
+                        <button type="submit" class="btn btn-primary w-50 mx-auto d-block">Zaktualizuj wino</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/file-upload-label.js"></script>
+}
